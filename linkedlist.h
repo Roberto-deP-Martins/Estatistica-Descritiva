@@ -36,10 +36,27 @@ DoubleNode* doubleListInsert (DoubleNode* lst, double val) {
     }
     if (!foundDouble) {
         DoubleNode* newNode = (DoubleNode*) malloc(sizeof(DoubleNode));
+        DoubleNode *iterator = lst;
         newNode->value = val;
         newNode->amount = 1;
-        newNode->next = lst;
-        return newNode;
+        if (lst == NULL)
+        {
+            newNode->next = NULL;
+            lst = newNode;
+        }
+        else if (iterator->value > val)
+        {
+            newNode->next = lst;
+            lst = newNode;
+        }
+        else
+        {
+            while (iterator->next != NULL && iterator->next->value < val)
+                iterator = iterator->next;
+            newNode->next = iterator->next;
+            iterator->next = newNode;
+        }
+        return lst;
     }
 }
 
@@ -97,6 +114,19 @@ double avg(DoubleNode* lst) {
         sum += (node->value * node->amount);
     }
     return sum / listTotalValuesAmount(lst);
+}
+
+double mode(DoubleNode *lst) {
+    DoubleNode *node = lst;
+    int biggestAmmount = 0;
+    double value;
+    for (node; node != NULL; node = node->next) {
+        if (node->amount > biggestAmmount) {
+            biggestAmmount = node->amount;
+            value = node->value;
+        }
+    }
+    return value;
 }
 
 double var(DoubleNode *lst) {

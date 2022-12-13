@@ -186,6 +186,7 @@ int main() {
             nonGorupedTable(newestNode);
             double average = avg(newestNode);
             printf("\nMédia: %g\n", average);
+            printf("Moda: %g\n", mode(newestNode));
             double max = listBiggestValue(newestNode);
             double min = listMinValue(newestNode);
             printf("Mínimo: %.2lf\n", min);
