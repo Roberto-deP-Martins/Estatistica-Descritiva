@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "doubletools.h"
+#include "linkedlist.h"
 
 typedef struct QuantitativeClass {
     double min;
@@ -30,7 +31,7 @@ double adjustDelta(double delta,  int amountOfClasses) {
     return adjustDelta;
 }
 
-void printClassesTable (int justifyParam, int classesAmount, int totalAmount ,QuantitativeClass *classArray, double *frequencyArray) {
+void printClassesTable (int justifyParam, int classesAmount, int totalAmount ,QuantitativeClass *classArray, int *frequencyArray) {
     printf("\n%-*s   %*s   %*s   %*s   %*s\n", justifyParam ,"Classes", 15, "Freq Abs.", 15, "Freq. relat.", 15, "Freq. Acum.", 15, "Freq. Acum. Relat.");
     printf("--------------------------------------------------------------------------------------------------\n");
     double relativeFreqTotal = 0;
@@ -38,10 +39,10 @@ void printClassesTable (int justifyParam, int classesAmount, int totalAmount ,Qu
     for (int i = 0; i < classesAmount; i++)
     {
         absoluteFreqTotal += frequencyArray[i];
-        relativeFreqTotal += (frequencyArray[i] / totalAmount);
+        relativeFreqTotal = relativeFreqTotal + ((double)frequencyArray[i] / totalAmount);
         char classOutput[50];
         sprintf(classOutput,"%g|-%g", classArray[i].min, classArray[i].max);
-        printf("%-*s %*g %*.2g %*g %*.2lf\n", justifyParam ,classOutput, 15, frequencyArray[i], 15, frequencyArray[i] / totalAmount, 15, absoluteFreqTotal, 15, relativeFreqTotal);
+        printf("%-*s %*d %*.2g %*g %*.2lf\n", justifyParam ,classOutput, 15, frequencyArray[i], 15, (double)(frequencyArray[i]) / totalAmount, 15, absoluteFreqTotal, 15, relativeFreqTotal);
     }
     printf("--------------------------------------------------------------------------------------------------\n");
     printf("%-*s %*d %*.2f\n", justifyParam, "Total", 15, totalAmount, 15, 1.0);
@@ -63,4 +64,14 @@ void nonGorupedTable(DoubleNode *currentNode) {
 
     printf("--------------------------------------------------------------------------------------------------\n");
     printf("%-*s %*d %*.2f\n", justifyParam, "Total", 15, total, 15, 1.0);
+}
+
+double groupedSampleAverage(QuantitativeClass *classes, int *frequencies, int amountOfValues, int amountOfClasses) {
+    double sum = 0;
+    for (int i = 0; i < amountOfClasses; i++)
+    {
+        double classAvg = (classes[i].min + classes[i].max) / 2.0;
+        sum = sum + (classAvg * frequencies[i]);
+    }
+    return sum / amountOfValues;
 }

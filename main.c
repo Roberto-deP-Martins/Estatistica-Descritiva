@@ -57,9 +57,7 @@ int main() {
         QuantitativeClass *classes;
         classes = (QuantitativeClass *)malloc(classesAmount * sizeof(QuantitativeClass));
         if (classes == NULL)
-        {
             mallocErrorHandler();
-        }
         printf("Classes: [");
         for (int i = 0; i < classesAmount; i++)
         {
@@ -76,25 +74,20 @@ int main() {
         printf("Pontos médios: ");
         for (int i = 0; i < classesAmount; i++)
         {
-            double midPoint = (classes[i].max + classes[i].min) / 2;
-            if (i < classesAmount - 1) {
-                printf("%g   ", midPoint);
-            }
-            else {
-                printf("%g\n", midPoint);
-            }
+            double averageValue = (classes[i].max + classes[i].min) / 2;
+            if (i < classesAmount - 1)
+                printf("%g   ", averageValue);
+            else
+                printf("%g\n", averageValue);
         }
 
-        double *frequencies;
-        frequencies = (double *)malloc(classesAmount * sizeof(double));
+        int *frequencies;
+        frequencies = (int *)malloc(classesAmount * sizeof(int));
         if (frequencies == NULL)
-        {
             mallocErrorHandler();
-        }
+
         for (int i = 0; i < classesAmount; i++)
-        {
             frequencies[i] = 0;
-        }
 
         int valuesTotalAmount = 0;
         char valuesInput[1024];
@@ -121,6 +114,7 @@ int main() {
 
         int classJustifyParam = (digitsAmount(classes[classesAmount - 1].min) + digitsAmount(classes[classesAmount - 1].max) + 2) * 2;
         printClassesTable(classJustifyParam, classesAmount, valuesTotalAmount, classes, frequencies);
+        printf("\nMédia: %g\n", groupedSampleAverage(classes, frequencies, valuesTotalAmount, classesAmount));
         
         free(frequencies);
         free(classes);
@@ -177,9 +171,7 @@ int main() {
                         // Atualiza qtd de dígitos com o maior que já foi inserido
                         short int valueDigitsAmount = digitsAmount(stringAsDouble);
                         if (valueDigitsAmount > biggestValueSize)
-                        {
                             biggestValueSize = valueDigitsAmount;
-                        }
                     }
                 }
             } while (strcmp(valuesInput, "") != 0);  // Repete até digitar string vazia
