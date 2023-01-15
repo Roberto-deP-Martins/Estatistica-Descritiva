@@ -10,16 +10,16 @@ typedef struct QuantitativeClass {
 } QuantitativeClass;
 
 double adjustDelta(double delta,  int amountOfClasses) {
-    double adjustDelta;
+    double adjustedDelta = delta;  // Caso não haja necessidade de ajuste
     double nearestMultiplier = delta / amountOfClasses;
     if (nearestMultiplier != (int)nearestMultiplier) {
         if (delta == (int)delta) {  // Se delta é inteiro
-            adjustDelta = amountOfClasses * ((int)nearestMultiplier + 1);  // Ajusta delta para próximo múltiplo maior que valor original
+            adjustedDelta = amountOfClasses * ((int)nearestMultiplier + 1);  // Ajusta delta para próximo múltiplo maior que valor original
         }
         else {
             int decimalDigitsAmount = fractionalPartSize(delta);
             delta *= pow(10, decimalDigitsAmount);  // Múltiplica valor por potência de 10 de modo a não haver mais parte fracionária
-            double adjustedDelta = ((int)(delta / 10)) * 10;  // Faz variável com valor de delta com dígito da casa das unidades definido em 0
+            adjustedDelta = ((int)(delta / 10)) * 10;  // Faz variável com valor de delta com dígito da casa das unidades definido em 0
 
             // Repete até que adjustedDelta seja divisível pela qtd de classes e adjustedDelta seja no mínimo igual à delta
             while (((int)adjustedDelta % amountOfClasses != 0) || adjustedDelta < delta) {
@@ -28,7 +28,7 @@ double adjustDelta(double delta,  int amountOfClasses) {
             adjustedDelta /= pow(10, decimalDigitsAmount);  // Retorna adjustedDelta à sua unidade de grandeza apropriada
         }
     }
-    return adjustDelta;
+    return adjustedDelta;
 }
 
 void printClassesTable (int justifyParam, int classesAmount, int totalAmount ,QuantitativeClass *classArray, int *frequencyArray) {
